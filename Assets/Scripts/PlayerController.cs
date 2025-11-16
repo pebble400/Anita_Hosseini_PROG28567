@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     private void MovementUpdate(Vector2 playerInput)
     {
-        move = Input.GetAxisRaw("Horizontal");
+        move = Input.GetAxisRaw("Horizontal"); 
         transform.Translate(new Vector3(move * speed * Time.deltaTime, 0f, 0f));
     }
 
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         
-        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, distance, groundLayer)) //getting access to the physics class and passing the starting point for the raycast
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, distance, groundLayer)) 
         {
             return true;
         }
