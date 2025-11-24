@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     private void MovementUpdate(Vector2 playerInput)
     {
-        if(rb.linearVelocity.y > terminalSpeed)
+        if (rb.linearVelocity.y > terminalSpeed)
         {
             rb.linearVelocity = new Vector2 (rb.linearVelocity.x, terminalSpeed);
         }
