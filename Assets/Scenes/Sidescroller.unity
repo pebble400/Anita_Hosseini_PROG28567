@@ -1712,7 +1712,7 @@ MonoBehaviour:
     m_Bits: 64
   apexHeight: 2.5
   apexTime: 0.5
-  terminalSpeed: 5
+  terminalSpeed: 2
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0
