@@ -8,7 +8,7 @@ public class PlayerVisuals : MonoBehaviour
 
     private readonly int isWalkingHash = Animator.StringToHash("IsWalking");
     private readonly int isGroundedHash = Animator.StringToHash("IsGrounded");
-
+    private readonly int deathStateHash = Animator.StringToHash("Dead");
     void Update()
     {
         animator.SetBool(isWalkingHash, playerController.IsWalking());
@@ -22,6 +22,12 @@ public class PlayerVisuals : MonoBehaviour
             case PlayerController.FacingDirection.right:
                 bodyRenderer.flipX = false;
                 break;
+        }
+
+        //debug
+        if (Input.GetKey(KeyCode.X))
+        {
+            animator.Play(deathStateHash);
         }
     }
 }
