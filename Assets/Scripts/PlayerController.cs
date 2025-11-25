@@ -25,6 +25,13 @@ public class PlayerController : MonoBehaviour
         left, right
     }
 
+    public enum CharacterState
+    {
+        Idle, Walking, Jump, Dead
+    }
+
+    private CharacterState state = CharacterState.Idle;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
