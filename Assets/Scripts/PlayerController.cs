@@ -15,11 +15,17 @@ public class PlayerController : MonoBehaviour
     
 
 
-    private bool canDash = true;
-    private bool isDashing;
-    public float dashingPower = 10f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
+    private bool canDash = true; //boolean for checking if the player is allowed to dash
+    private bool isDashing;//checks if the player is dashing
+    public float dashingPower = 10f; //how fast the player can dash
+    private float dashingTime = 0.2f;//how long the player can dash
+    private float dashingCooldown = 1f;//dash cooldown
+
+    //wall sliding variables
+    private bool isWallSliding;
+    private float wallSlidingSpeed = 2f;
+
+
 
 
     public float terminalSpeed = 1f;
@@ -31,6 +37,9 @@ public class PlayerController : MonoBehaviour
 
     private float gravity;
     private float jumpVel;
+
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
     public enum FacingDirection
     {
         left, right
@@ -74,7 +83,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-        
+        WallSlide();
 
 
         playerInput.x = Input.GetAxisRaw("Horizontal");
@@ -136,7 +145,24 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
-    
+    private bool IsWalled()
+    {
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);//creates an invisible circle with a radius of 0.2 at the position of the wall check and returns true if it collides with the wall layer
+
+    }
+
+    private void WallSlide()
+    {
+        if (IsWalled() && !IsGrounded() && playerInput.x == 1 && playerInput.x == -1)
+        {
+            isWallSliding = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+    }
 
     public FacingDirection GetFacingDirection()
     {
@@ -151,24 +177,24 @@ public class PlayerController : MonoBehaviour
         return FacingDirection.right;
     }
 
-    private IEnumerator Dash()
+    private IEnumerator Dash()//The dash itself
     {
         canDash = false;
         isDashing = true;
-        float originalGravity = rb.gravityScale;
+        float originalGravity = rb.gravityScale;//setting the original gravity to zero when the dash happens so its not affected by the dash
         rb.gravityScale = 0f;
-        if (playerInput.x == 1)
+        if (playerInput.x == 1)//if the player is facing right, dash to the right
         {
             rb.linearVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
         }
-        if (playerInput.x == -1)
+        if (playerInput.x == -1)//same thing for facing left
         {
             rb.linearVelocity = new Vector2(-transform.localScale.x * dashingPower, 0f);
         }
         yield return new WaitForSeconds(dashingTime);
         rb.gravityScale = originalGravity;
         isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);
+        yield return new WaitForSeconds(dashingCooldown); 
         canDash = true;
 
     }
