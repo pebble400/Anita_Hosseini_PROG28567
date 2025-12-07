@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +12,15 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public float apexHeight = 3.5f;
     public float apexTime = 0.5f;
+    
+
+
+    private bool canDash = true;
+    private bool isDashing;
+    public float dashingPower = 10f;
+    private float dashingTime = 0.2f;
+    private float dashingCooldown = 1f;
+
 
     public float terminalSpeed = 1f;
 
@@ -41,6 +52,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
+
         // The input from the player needs to be determined and
         // then passed in the to the MovementUpdate which should
         // manage the actual movement of the character.
@@ -53,6 +69,12 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
+        if (Input.GetKey(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+
+        
 
 
         playerInput.x = Input.GetAxisRaw("Horizontal");
@@ -114,6 +136,8 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
+    
+
     public FacingDirection GetFacingDirection()
     {
         if (playerInput.x == 1)
@@ -124,6 +148,28 @@ public class PlayerController : MonoBehaviour
         {
             return FacingDirection.left;
         }
-        return FacingDirection.left;
+        return FacingDirection.right;
+    }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        if (playerInput.x == 1)
+        {
+            rb.linearVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        }
+        if (playerInput.x == -1)
+        {
+            rb.linearVelocity = new Vector2(-transform.localScale.x * dashingPower, 0f);
+        }
+        yield return new WaitForSeconds(dashingTime);
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+
     }
 }
