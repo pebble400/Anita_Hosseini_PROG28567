@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         
 
-        if (isDashing)
+        if (isDashing)//prevents player from doing any other action while dashing
         {
             return;
         }
