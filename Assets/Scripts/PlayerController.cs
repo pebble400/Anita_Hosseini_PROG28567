@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     private float jumpVel;
 
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private LayerMask wallLayer;
+    public LayerMask wallLayer;
     public enum FacingDirection
     {
         left, right
