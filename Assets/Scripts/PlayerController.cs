@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public float apexHeight = 3.5f;
     public float apexTime = 0.5f;
-    
+    private float jumpingPower = 1f;
 
 
     private bool canDash = true; //boolean for checking if the player is allowed to dash
@@ -25,7 +25,12 @@ public class PlayerController : MonoBehaviour
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
 
-
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    public float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    public float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
 
     public float terminalSpeed = 1f;
@@ -85,11 +90,12 @@ public class PlayerController : MonoBehaviour
 
         WallSlide();
 
+        WallJump();
 
         playerInput.x = Input.GetAxisRaw("Horizontal");
         playerInput.y = Input.GetAxisRaw("Vertical");
         MovementUpdate(playerInput);
-        
+
         JumpInput(playerInput);
         transform.position += velocity * Time.deltaTime;
     }
@@ -147,7 +153,15 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalled()
     {
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);//creates an invisible circle with a radius of 0.2 at the position of the wall check and returns true if it collides with the wall layer
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, transform.up, distance, wallLayer))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        //return Physics2D.OverlapCircle(wallCheck.position, 0.5f, wallLayer);//creates an invisible circle with a radius of 0.2 at the position of the wall check and returns true if it collides with the wall layer
 
     }
 
@@ -161,6 +175,26 @@ public class PlayerController : MonoBehaviour
         else
         {
             isWallSliding = false;
+        }
+    }
+
+    private void WallJump()
+    {
+        if (isWallSliding) 
+        {
+            isWallJumping = false;
+            wallJumpingDirection = -playerInput.x;
+            wallJumpingCounter = wallJumpingTime;
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+        if (playerInput.y < 0 && wallJumpingCounter > 0f)
+        {
+            isWallJumping = true;
+            rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            wallJumpingCounter = 0f;
         }
     }
 
