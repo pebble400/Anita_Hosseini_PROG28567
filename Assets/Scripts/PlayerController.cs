@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
 
+    //wall jumping variables
     private bool isWallJumping = true;
     private float wallJumpingDirection;
     public float wallJumpingTime = 0.2f;
