@@ -12,8 +12,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public float apexHeight = 3.5f;
     public float apexTime = 0.5f;
-    private float jumpingPower = 1f;
-
+    
 
     private bool canDash = true; //boolean for checking if the player is allowed to dash
     private bool isDashing;//checks if the player is dashing
@@ -25,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
 
-    private bool isWallJumping;
+    private bool isWallJumping = true;
     private float wallJumpingDirection;
     public float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
@@ -66,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
+
         if (isDashing)
         {
             return;
@@ -232,4 +233,6 @@ public class PlayerController : MonoBehaviour
         canDash = true;
 
     }
+
+    
 }
