@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
     private bool IsWalled()
     {
         
-        return Physics2D.OverlapCircle(wallCheck.position, 0.5f, wallLayer);//creates an invisible circle with a radius of 0.2 at the position of the wall check and returns true if it collides with the wall layer
+        return Physics2D.OverlapCircle(wallCheck.position, 0.5f, wallLayer);//creates an invisible circle with a radius of 0.5 at the position of the wall check and returns true if it collides with the wall layer
 
     }
 
