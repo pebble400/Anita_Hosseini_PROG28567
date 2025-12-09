@@ -4414,7 +4414,7 @@ MonoBehaviour:
     m_Bits: 64
   apexHeight: 3.5
   apexTime: 0.5
-  dashingPower: 5
+  dashingPower: 10
   wallJumpingTime: 0.2
   wallJumpingDuration: 0.4
   terminalSpeed: 2
